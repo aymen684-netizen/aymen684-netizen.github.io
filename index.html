@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>English+ Staging Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 70px auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    button {
+      padding: 12px 24px;
+      cursor: pointer;
+    }
+    pre {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+  </style>
+</head>
+<body>
+  <h1>English+ Staging</h1>
+  <p>Secure API connection test</p>
+  <button id="test">Test API Connection</button>
+  <pre id="result">Ready to test.</pre>
+
+  <script>
+    document.getElementById("test").onclick = async () => {
+      const result = document.getElementById("result");
+      result.textContent = "Testing...";
+
+      try {
+        const response = await fetch(
+          "https://english-plus-ai-staging.aymen684.workers.dev/api/writing/review",
+          {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              draft: "I go to school every day.",
+              stage: "sentence",
+              level: "A2"
+            })
+          }
+        );
+
+        result.textContent =
+          "HTTP Status: " + response.status +
+          "\nResponse: " + await response.text();
+      } catch (error) {
+        result.textContent =
+          "Connection error: " + error.message;
+      }
+    };
+  </script>
+</body>
+</html>
